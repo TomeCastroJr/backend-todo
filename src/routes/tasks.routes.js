@@ -11,20 +11,7 @@ router.get('/tasks', async (req, res) => {
 })
 
 router.get("/tasks/:id", async (req, res) => {
-    const { id } = req.params
-    const validatedId = mongoose.isValidObjectId(id);
-    if(!validatedId){
-        return res.status(400).send("Id inválido");
-    }
-    try{
-        const task = await TaskModel.findById(id).exec();
-        if(!task){
-            return res.status(404).send("Tarefa não encontrada")
-        }
-        res.status(200).send(task)
-    }catch(error){
-        res.status(500).send("Erro ao consultar tarefa")
-    }
+    return new TaskController(req, res).getTaskById();
 })
 
 router.post("/tasks", async (req, res) => {
