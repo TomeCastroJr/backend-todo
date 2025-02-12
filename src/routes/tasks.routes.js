@@ -1,19 +1,13 @@
 import { Router } from "express";
-import TaskModel from"../models/task.model.js";
 import mongoose from "mongoose";
+
+import TaskController from "../controller/task.controller.js";
+import TaskModel from"../models/task.model.js";
 
 const router = Router();
 
-
-
 router.get('/tasks', async (req, res) => {
-    try{
-        const tasks = await TaskModel.find({})
-        res.status(200).send(tasks);
-
-    }catch(error){
-        res.status(500).send(error.message)
-    }
+    return new TaskController(req, res).getTasks();
 })
 
 router.get("/tasks/:id", async (req, res) => {
