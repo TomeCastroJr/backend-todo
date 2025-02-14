@@ -1,5 +1,6 @@
 import TaskModel from "../models/task.model.js";
 import mongoose from "mongoose";
+import notFoundError from "../erros/mongodb.error.js";
 
 class TaskController {
     constructor(req, res){
@@ -21,12 +22,12 @@ class TaskController {
         const { id } = this.req.params
         const validatedId = mongoose.isValidObjectId(id);
         if(!validatedId){
-            return this.res.status(400).send("Id inválido");
+            return notFoundError(this.res, "id");
         }
         try{
             const task = await TaskModel.findById(id).exec();
             if(!task){
-                return this.res.status(404).send("Tarefa não encontrada")
+                return notFoundError(this.res);
             }
             this.res.status(200).send(task)
         }catch(error){
@@ -56,7 +57,7 @@ class TaskController {
                 if(allowedUpdates.includes(update)){
                     taskToUpdate[update] = this.req.body[update];
                 }else{
-                    return this.res.status(500).send("problema na edição")
+                    return notFoundError(this.res, "Não foi possível atualizar tarefa")
                 }
             }
     
@@ -73,13 +74,13 @@ class TaskController {
 
         const validatedId = mongoose.isValidObjectId(id);
         if(!validatedId){
-            return this.deleteTaskres.status(400).send("Id inválido");
+            return notFoundError(this.res, "id não é um objeto válido pelo mongodb");
         }
     
         try{
             const taskdeleted =  await TaskModel.findByIdAndDelete(id);
             if(!taskdeleted){
-                return this.res.status(400).send("tarefa não encontrada");
+                return notFoundError(this.res, "Dado não encontrado no banco de dados")
             }
             this.res.status(200).send("Tarefa deletada com sucesso")
         }catch(erro){

@@ -2,7 +2,6 @@ import { Router } from "express";
 import mongoose from "mongoose";
 
 import TaskController from "../controller/task.controller.js";
-import TaskModel from"../models/task.model.js";
 
 const router = Router();
 

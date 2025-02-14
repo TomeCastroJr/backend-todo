@@ -13,10 +13,4 @@ connectToDatabase();
 
 
 
-
-
-
-
-
-
 app.listen(8000, () => console.log("servidor rodando na porta 8000"));
